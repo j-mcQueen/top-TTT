@@ -19,6 +19,10 @@ body {
     background-color: var(--primary);
 }
 
+main {
+    position: relative;
+}
+
 span, p, a {
     color: var(--tertiary1);
     font-family: var(--xo);
@@ -127,4 +131,12 @@ a:hover {
     border-radius: 50px;
     background-color: var(--secondary);
     box-shadow: 0 0 6px 1px #000411 inset;
+}
+
+footer {
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    padding: 15px 0;
 }
