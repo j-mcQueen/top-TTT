@@ -7,8 +7,10 @@
     --tertiary1: #AEB7B3;
     --tertiary2: #EFCB68;
     --tertiary3: #160C28;
+    --dim: 0.3s ease;
     min-width: 300px;
     overflow-x: hidden;
+    overflow-y: scroll;
     font-size: 10px;
     box-sizing: border-box;
 }
@@ -24,12 +26,12 @@ span, p, a {
 }
 
 a {
-    transition: 0.3s ease;
+    transition: var(--dim);
 }
 
 a:hover {
     color: var(--tertiary2);
-    transition: 0.3s ease;
+    transition: var(--dim);
 }
 
 .title {
@@ -47,6 +49,7 @@ a:hover {
 .restart {
     display: flex;
     justify-content: center;
+    margin-top: 3%;
 }
 
 .icon {
@@ -54,17 +57,52 @@ a:hover {
     box-shadow: 0 0 6px 1px #000411 inset;
     border-radius: 50px;
     padding: 15px;
-    transition: 0.3s ease;
+    transition: var(--dim);
 }
 
 .icon:hover {
     background-color: #C9DAE2;
     cursor: pointer;
-    transition: 0.3s ease;
+    transition: var(--dim);
 }
 
 .icon > svg {
     color: var(--tertiary3);
     width: 24px;
     height: 24px;
+}
+
+.game {
+    display: flex;
+    justify-content: center;
+    margin: 3% 0;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.block {
+    /* will need to change the width and height units later to create a responsive grid */
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 0 0 3px 1px #000411 inset;
+    background-color: #C9DAE2;
+    transition: var(--dim);
+}
+
+.block:hover {
+    cursor: pointer;
+    background-color: #b3c4cc;
+    transition: var(--dim);
+}
+
+.block > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
