@@ -1,14 +1,49 @@
 :root {
-    --text: var("Mukta", sans-serif);
-    --xo: var("Dosis", sans-serif);
-    --title: var("Rubik Maze", cursive);
-    --color1: var(#e3dfff);
-    --color2: var(#d3c0cd);
-    --color3: var(#b19994);
-    --color4: var(#937666);
-    --color5: var(#3d3a4b);
+    --text: "Mukta", sans-serif;
+    --xo: "Dosis", sans-serif;
+    --title: "Staatliches", cursive;
+    --primary: #000411;
+    --secondary: #E1EFE6;
+    --tertiary1: #AEB7B3;
+    --tertiary2: #EFCB68;
+    --tertiary3: #160C28;
     min-width: 300px;
     overflow-x: hidden;
     font-size: 10px;
     box-sizing: border-box;
+}
+
+body {
+    background-color: var(--primary);
+}
+
+span, p, a {
+    color: var(--tertiary1);
+    font-family: var(--xo);
+    font-size: 2.4rem;
+}
+
+p {
+    
+}
+
+a {
+    transition: 0.3s ease;
+}
+
+a:hover {
+    color: var(--tertiary2);
+    transition: 0.3s ease;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+}
+
+.title > h1 {
+    color: var(--tertiary2);
+    font-family: var(--title);
+    font-size: 8rem;
+    letter-spacing: -5px;
 }
