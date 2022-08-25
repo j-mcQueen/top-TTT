@@ -2,11 +2,11 @@
     --text: "Mukta", sans-serif;
     --xo: "Dosis", sans-serif;
     --title: "Staatliches", cursive;
-    --primary: #000411;
+    --primary: #151415;
     --secondary: #E1ECEF;
     --tertiary1: #AEB7B3;
-    --tertiary2: #EFCB68;
-    --tertiary3: #160C28;
+    --tertiary2: #F2E2D2;
+    --tertiary4: #C9DAE2;
     --dim: 0.3s ease;
     min-width: 300px;
     overflow-x: hidden;
@@ -87,11 +87,11 @@ a:hover {
 
 .block {
     /* will need to change the width and height units later to create a responsive grid */
-    width: 150px;
-    height: 150px;
+    width: 125px;
+    height: 125px;
     border-radius: 10px;
     box-shadow: 0 0 3px 1px #000411 inset;
-    background-color: #C9DAE2;
+    background-color: var(--secondary);
     transition: var(--dim);
 }
 
@@ -105,4 +105,26 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.scores {
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+}
+
+.scores > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.count {
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    background-color: var(--secondary);
+    box-shadow: 0 0 6px 1px #000411 inset;
 }
