@@ -10,18 +10,19 @@
 
 // PSEUDOCODE
 
-// 1 - Create array of 9 empty strings
-// 2 - Add click events to all 9 spaces on the game board
 // 3 - On click, add X to space
 // 4 - If space has text, do nothing
 
 const store_dom = (() => {
     // store all elements relevant to the game without attaching them to global scope
-    let blocks = document.getElementsByClassName("block");
-    let restart = document.querySelector(".restart > button");
-
+    const blocks = document.getElementsByClassName("block");
+    const restart = document.querySelector(".restart > button");
     return { blocks, restart };
 })();
+
+// create module for all required events
+// name click event for game board space variable
+// attach event listeners to game board spaces
 
 const game = (() => {
     const board = ["", "", "", 
@@ -31,22 +32,34 @@ const game = (() => {
     const fill_board = () => {
         for (let i = 0; i < store_dom.blocks.length; i++) {
             store_dom.blocks[i].textContent = board[i];
-        }
+        };
     };
-
     return { board, fill_board };
 })(); // execute game.fill_board() every time a new marker is added to the board/ array
 
 game.fill_board();
 
 const Player = (mark) => {
-    const add_mark = () => {
+    const add_mark = (e) => {
         // on click, add mark to text content of event target button
+        if (e.target.textContent === "") {
+            e.target.textContent = mark;
+        } else {
+            // call a display object function maybe?
+        }
     };
-
     return { add_mark };
 };
+
+const x = Player("X");
+const o = Player("O");
 
 const display = (() => {
 
 })();
+
+const events = ((mark) => {
+    for (let i = 0; i < store_dom.blocks.length; i++) {
+        store_dom.blocks[i].addEventListener("click", mark.add_mark); // add click events to all 9 game board spaces, and call the function which adds marks to spaces
+    };
+})(x); // <- should be dynamic, not specifically x or o
