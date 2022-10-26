@@ -5,6 +5,10 @@ const store_dom = (() => {
     return { blocks, restart };
 })();
 
+const display = (() => {
+
+})();
+
 const game_board = (() => {
     const board = ["", "", "", 
                    "", "", "", 
@@ -16,8 +20,30 @@ const game_board = (() => {
         };
     };
 
-    return { board, fill };
-})(); // execute game_board.fill() every time a new marker is added to the board/ array
+    const win_conditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+    const win_check = (mark) => {
+        // find the win condition in which the value of every index in the condition matches the supplied mark
+       const result = win_conditions.find(condition => condition.every(index => board[index] === mark));
+       if (result !== undefined) {
+        // call function(s) which highlights winning spaces, locks the game_board and announces the winner on the display
+        console.log("winner");
+       } else {
+            // call display function which announces tie to the user
+            if (!board.includes("")) console.log("tie");
+       }
+    };
+    return { board, fill, win_check };
+})();
 
 const Player = (mark) => {
     const add_mark = (e) => {
@@ -29,10 +55,10 @@ const Player = (mark) => {
         } else {
             // call a display object function to indicate to the user that you can't place a mark here maybe?
         };
+        game_board.win_check(mark);
     };
     return { add_mark };
 };
-
 
 const game = (() => {
     let mark;
@@ -49,17 +75,11 @@ const game = (() => {
                 // call display function here which tells the user "Invalid placement"
             } else {
                 mark === x ? mark = o : mark = x;
-                mark.add_mark(e);
-                // ensures correct alternation of x and o - prevents "breaking" the turn via multiple clicks on the same space
+                mark.add_mark(e); // ensures correct alternation of x and o - prevents "breaking" the turn via multiple clicks on the same space
             }
         }
     };
-    
     return { turn_handler };
-})();
-
-const display = (() => {
-
 })();
 
 const events = (() => {
