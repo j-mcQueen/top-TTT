@@ -1,12 +1,17 @@
 const store_dom = (() => {
     // store all elements relevant to the game_board without attaching them to global scope
-    const blocks = document.getElementsByClassName("block");
     const restart = document.querySelector(".restart > button");
-    return { blocks, restart };
+    const announcer = document.querySelector(".announcements > p");
+    const blocks = document.getElementsByClassName("block");
+    return { restart, announcer, blocks };
 })();
 
-const display = (() => {
-
+const display_control = (() => {
+    const winner = (player, color) => {
+        store_dom.announcer.textContent = `${player} wins! Restart game?`;
+        store_dom.announcer.setAttribute("style", color);
+    }
+    return { winner };
 })();
 
 const game_board = (() => {
@@ -31,18 +36,29 @@ const game_board = (() => {
         [2, 4, 6],
     ];
 
-    const win_check = (mark) => {
-        // find the win condition in which the value of every index in the condition matches the supplied mark
-       const result = win_conditions.find(condition => condition.every(index => board[index] === mark));
-       if (result !== undefined) {
-        // call function(s) which highlights winning spaces, locks the game_board and announces the winner on the display
-        console.log("winner");
+    const results = (mark) => {
+       const search = win_conditions.find(condition => condition.every(index => board[index] === mark));
+       if (search !== undefined) {
+        // highlight winning spaces
+        search.forEach(i => {
+            store_dom.blocks[i].setAttribute("style", "background-color: rgb(46, 135, 83); transition: 0.7s ease");
+        });
+        // lock game board
+        for (let i = 0; i < store_dom.blocks.length; i++) {
+            store_dom.blocks[i].setAttribute("disabled", "disabled");
+        };
+        // announce winner on display
+        if (mark === "X") {
+            display_control.winner("P1", "color: gold");
+        } else {
+            display_control.winner("P2", "color: pink");
+        }
        } else {
             // call display function which announces tie to the user
-            if (!board.includes("")) console.log("tie");
+        if (!board.includes("")) console.log("tie"); // prevents early tie being called
        }
     };
-    return { board, fill, win_check };
+    return { board, fill, results };
 })();
 
 const Player = (mark) => {
@@ -55,7 +71,7 @@ const Player = (mark) => {
         } else {
             // call a display object function to indicate to the user that you can't place a mark here maybe?
         };
-        game_board.win_check(mark);
+        game_board.results(mark);
     };
     return { add_mark };
 };
