@@ -120,6 +120,10 @@ a:hover {
     transition: var(--dim);
 }
 
+.block:disabled {
+    color: black;
+}
+
 .count {
     width: 60px;
     height: 60px;
