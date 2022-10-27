@@ -7,11 +7,14 @@ const store_dom = (() => {
 })();
 
 const display_control = (() => {
-    const winner = (player, color) => {
-        store_dom.announcer.textContent = `${player} wins! Restart game?`;
+    const result = (player, res, color) => {
+        store_dom.announcer.textContent = `${player} ${res}! Restart game?`;
         store_dom.announcer.setAttribute("style", color);
-    }
-    return { winner };
+    };
+    const turn = (player) => {
+        store_dom.announcer.textContent = `${player} turn`;
+    };
+    return { result, turn };
 })();
 
 const game_board = (() => {
@@ -39,24 +42,20 @@ const game_board = (() => {
     const results = (mark) => {
        const search = win_conditions.find(condition => condition.every(index => board[index] === mark));
        if (search !== undefined) {
-        // highlight winning spaces
-        search.forEach(i => {
-            store_dom.blocks[i].setAttribute("style", "background-color: rgb(46, 135, 83); transition: 0.7s ease");
-        });
-        // lock game board
-        for (let i = 0; i < store_dom.blocks.length; i++) {
-            store_dom.blocks[i].setAttribute("disabled", "disabled");
-        };
-        // announce winner on display
-        if (mark === "X") {
-            display_control.winner("P1", "color: gold");
-        } else {
-            display_control.winner("P2", "color: pink");
-        }
+            // highlight winning spaces
+            search.forEach(i => {
+                store_dom.blocks[i].setAttribute("style", "background-color: rgb(46, 135, 83); transition: 0.7s ease");
+            });
+            // lock game board
+            for (let i = 0; i < store_dom.blocks.length; i++) {
+                store_dom.blocks[i].setAttribute("disabled", "disabled");
+            };
+            // announce winner
+            return mark === "X" ? display_control.result("X", "wins", "color: gold") 
+                                : display_control.result("O", "wins", "color: pink");
        } else {
-            // call display function which announces tie to the user
-        if (!board.includes("")) console.log("tie"); // prevents early tie being called
-       }
+            if (!board.includes("")) display_control.result("Game", "tied", "color: cyan"); // prevents early tie being called
+       };
     };
     return { board, fill, results };
 })();
@@ -82,18 +81,19 @@ const game = (() => {
     const o = Player("O");
 
     const turn_handler = (e) => { // supply target of click event, otherwise it gets lost when add_mark() is called
+        // store_dom.announcer.textContent.startsWith("X") ? display_control.turn("O") : display_control.turn("X"); // works, but you can endlessly click on the same square and change the text in the announcer
         const empty_board = (item) => item === "";
-        if (game_board.board.every(empty_board)) { // if the entire game_board board array is empty, it is a new game, so X goes first, therefore add X
+        if (game_board.board.every(empty_board)) { // if entire game_board board array is empty -> new game -> X goes first -> add X
+            display_control.turn("O");
             mark = x;
             mark.add_mark(e);
-        } else { // if the board is not empty
-            if (e.target.textContent !== "") {
-                // call display function here which tells the user "Invalid placement"
-            } else {
+        } else { 
+            if (e.target.textContent === "") {
+                store_dom.announcer.textContent.startsWith("X") ? display_control.turn("O") : display_control.turn("X");
                 mark === x ? mark = o : mark = x;
                 mark.add_mark(e); // ensures correct alternation of x and o - prevents "breaking" the turn via multiple clicks on the same space
-            }
-        }
+            };
+        };
     };
     return { turn_handler };
 })();
