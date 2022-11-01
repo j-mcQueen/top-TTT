@@ -10,8 +10,10 @@ const display_control = (() => {
     const reset = () => {
         store_dom.announcer.textContent = "X turn";
         store_dom.announcer.removeAttribute("style");
+
         store_dom.restart.removeAttribute("style");
-        store_dom.restart.setAttribute("disabled", "disabled");
+        store_dom.restart.toggleAttribute("disabled", true);
+        store_dom.restart.removeEventListener("click", display_control.reset);
 
         for (let i = 0; i < game_board.board.length; i++) {
             game_board.board[i] = "";
@@ -19,17 +21,24 @@ const display_control = (() => {
         game_board.fill();
 
         for (let i = 0; i < store_dom.tiles.length; i++) {
-            store_dom.tiles[i].removeAttribute("disabled", "disabled");
-            store_dom.tiles[i].setAttribute("style", "background-color: white;")
+            store_dom.tiles[i].toggleAttribute("disabled", false);
+            if (store_dom.tiles[i].className === "tile winner") store_dom.tiles[i].classList.toggle("winner"); // toggle off
         };
         // remove locked buttons
     };
     const result = (player, res, color) => {
+        // setting color below makes it easier to apply the same color to both the announcer and restart elements
         store_dom.announcer.textContent = `${player} ${res}! Restart game?`;
         store_dom.announcer.setAttribute("style", color);
-        store_dom.restart.removeAttribute("disabled");
-        store_dom.restart.setAttribute("style", `background-${color}; transition: 0.7s ease`);
+
+        store_dom.restart.toggleAttribute("disabled", false);
+        store_dom.restart.setAttribute("style", `background-${color};`);
         store_dom.restart.addEventListener("click", display_control.reset);
+
+        // lock game board
+        for (let i = 0; i < store_dom.tiles.length; i++) {
+            store_dom.tiles[i].toggleAttribute("disabled", true);
+        }; // stored inside result so that locking game board occurs on game win OR tie
     };
     const turn = (player) => {
         store_dom.announcer.textContent = `${player} turn`;
@@ -64,17 +73,13 @@ const game_board = (() => {
         if (search !== undefined) { // if true, win condition has been found
             // highlight winning spaces
             search.forEach(i => {
-                store_dom.tiles[i].setAttribute("style", "background-color: rgb(46, 135, 83); transition: 0.7s ease");
+                store_dom.tiles[i].classList.toggle("winner"); // toggle on
             });
-            // lock game board
-            for (let i = 0; i < store_dom.tiles.length; i++) {
-                store_dom.tiles[i].setAttribute("disabled", "disabled");
-            };
             // announce winner
-            mark === "X" ? display_control.result("X", "wins", "color: #cca133")
+            mark === "X" ? display_control.result("X", "wins", "color: #fbf67f")
                                 : display_control.result("O", "wins", "color: pink");
         } else {
-            if (!board.includes("")) display_control.result("Game", "tied", "color: #8ca6d9"); // prevents early tie being called
+            if (!board.includes("")) display_control.result("Game", "tied", "color: #60ffa5"); // prevents early tie being called
         };
     };
     return { board, fill, results };
