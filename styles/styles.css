@@ -1,5 +1,4 @@
 :root {
-    --text: "Mukta", sans-serif;
     --xo: "Dosis", sans-serif;
     --title: "Staatliches", cursive;
     --primary: #151415;
@@ -8,7 +7,7 @@
     --tertiary2: #F2E2D2;
     --tertiary4: #C9DAE2;
     --dim: 0.3s ease;
-    min-width: 300px;
+    min-width: 375px;
     overflow-x: hidden;
     overflow-y: scroll;
     font-size: 10px;
@@ -97,7 +96,7 @@ a:hover {
     gap: 10px;
 }
 
-.block {
+.tile {
     /* will need to change the width and height units later to create a responsive grid */
     width: 125px;
     height: 125px;
@@ -114,13 +113,13 @@ a:hover {
     font-weight: 900;
 }
 
-.block:hover {
+.tile:hover {
     cursor: pointer;
     background-color: #b3c4cc;
     transition: var(--dim);
 }
 
-.block:disabled {
+.tile:disabled {
     color: black;
 }
 
