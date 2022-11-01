@@ -2,29 +2,49 @@ const store_dom = (() => {
     // store all elements relevant to the game_board without attaching them to global scope
     const restart = document.querySelector(".restart > button");
     const announcer = document.querySelector(".announcements > p");
-    const blocks = document.getElementsByClassName("block");
-    return { restart, announcer, blocks };
+    const tiles = document.getElementsByClassName("tile");
+    return { restart, announcer, tiles };
 })();
 
 const display_control = (() => {
+    const reset = () => {
+        store_dom.announcer.textContent = "X turn";
+        store_dom.announcer.removeAttribute("style");
+        store_dom.restart.removeAttribute("style");
+        store_dom.restart.setAttribute("disabled", "disabled");
+
+        for (let i = 0; i < game_board.board.length; i++) {
+            game_board.board[i] = "";
+        }
+        game_board.fill();
+
+        for (let i = 0; i < store_dom.tiles.length; i++) {
+            store_dom.tiles[i].removeAttribute("disabled", "disabled");
+            store_dom.tiles[i].setAttribute("style", "background-color: white;")
+        };
+        // remove locked buttons
+    };
     const result = (player, res, color) => {
         store_dom.announcer.textContent = `${player} ${res}! Restart game?`;
         store_dom.announcer.setAttribute("style", color);
+        store_dom.restart.removeAttribute("disabled");
+        store_dom.restart.setAttribute("style", `background-${color}; transition: 0.7s ease`);
+        store_dom.restart.addEventListener("click", display_control.reset);
     };
     const turn = (player) => {
         store_dom.announcer.textContent = `${player} turn`;
     };
-    return { result, turn };
+    return { result, turn, reset };
 })();
 
 const game_board = (() => {
     const board = ["", "", "", 
                    "", "", "", 
-                   "", "", "",]; // each empty string represents the corresponding space on the game_board board
+                   "", "", "",]; // each empty string represents the corresponding space on the game board
     
     const fill = () => {
-        for (let i = 0; i < store_dom.blocks.length; i++) {
-            store_dom.blocks[i].textContent = board[i];
+        for (let i = 0; i < store_dom.tiles.length; i++) {
+            store_dom.tiles[i].textContent = game_board.board[i];
         };
     };
 
@@ -40,22 +60,22 @@ const game_board = (() => {
     ];
 
     const results = (mark) => {
-       const search = win_conditions.find(condition => condition.every(index => board[index] === mark));
-       if (search !== undefined) {
+        let search = win_conditions.find(condition => condition.every(index => board[index] === mark));
+        if (search !== undefined) { // if true, win condition has been found
             // highlight winning spaces
             search.forEach(i => {
-                store_dom.blocks[i].setAttribute("style", "background-color: rgb(46, 135, 83); transition: 0.7s ease");
+                store_dom.tiles[i].setAttribute("style", "background-color: rgb(46, 135, 83); transition: 0.7s ease");
             });
             // lock game board
-            for (let i = 0; i < store_dom.blocks.length; i++) {
-                store_dom.blocks[i].setAttribute("disabled", "disabled");
+            for (let i = 0; i < store_dom.tiles.length; i++) {
+                store_dom.tiles[i].setAttribute("disabled", "disabled");
             };
             // announce winner
-            return mark === "X" ? display_control.result("X", "wins", "color: gold") 
+            mark === "X" ? display_control.result("X", "wins", "color: #cca133")
                                 : display_control.result("O", "wins", "color: pink");
-       } else {
-            if (!board.includes("")) display_control.result("Game", "tied", "color: cyan"); // prevents early tie being called
-       };
+        } else {
+            if (!board.includes("")) display_control.result("Game", "tied", "color: #8ca6d9"); // prevents early tie being called
+        };
     };
     return { board, fill, results };
 })();
@@ -81,7 +101,6 @@ const game = (() => {
     const o = Player("O");
 
     const turn_handler = (e) => { // supply target of click event, otherwise it gets lost when add_mark() is called
-        // store_dom.announcer.textContent.startsWith("X") ? display_control.turn("O") : display_control.turn("X"); // works, but you can endlessly click on the same square and change the text in the announcer
         const empty_board = (item) => item === "";
         if (game_board.board.every(empty_board)) { // if entire game_board board array is empty -> new game -> X goes first -> add X
             display_control.turn("O");
@@ -99,7 +118,7 @@ const game = (() => {
 })();
 
 const events = (() => {
-    for (let i = 0; i < store_dom.blocks.length; i++) {
-        store_dom.blocks[i].addEventListener("click", game.turn_handler); // add click events to all 9 board spaces, and call the function which handles the turn and consequently which mark gets rendered to the board
+    for (let i = 0; i < store_dom.tiles.length; i++) {
+        store_dom.tiles[i].addEventListener("click", game.turn_handler);
     };
 })();
