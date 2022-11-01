@@ -33,7 +33,7 @@ a {
 }
 
 a:hover {
-    color: rgb(46, 135, 83);
+    color: #60ffa5;
     transition: var(--dim);
 }
 
@@ -53,6 +53,12 @@ a:hover {
     display: flex;
     justify-content: center;
     margin-top: 3%;
+}
+
+.icon:enabled:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease;
+    backface-visibility: hidden;
 }
 
 .icon {
@@ -113,9 +119,9 @@ a:hover {
     font-weight: 900;
 }
 
-.tile:hover {
+.tile:enabled:hover {
     cursor: pointer;
-    background-color: #b3c4cc;
+    transform: scale(1.05);
     transition: var(--dim);
 }
 
@@ -123,12 +129,9 @@ a:hover {
     color: black;
 }
 
-.count {
-    width: 60px;
-    height: 60px;
-    border-radius: 50px;
-    background-color: var(--secondary);
-    box-shadow: 0 0 6px 1px #000411 inset;
+.winner {
+    background-color: rgb(94, 178, 238);
+    transition: 0.7s ease;
 }
 
 footer {
