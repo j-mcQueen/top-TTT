@@ -141,3 +141,27 @@ footer {
     bottom: 0;
     padding: 15px 0;
 }
+
+@media only screen and (max-width: 768px) {
+
+    a {
+        color: #60ffa5;
+    }
+
+    .restart {
+        margin-top: 8%;
+    }
+
+    .announcements {
+        height: 100px;
+    }
+
+    .board {
+        gap: 7.5px;
+    }
+
+    .tile {
+        width: 110px;
+        height: 110px;
+    }
+}
