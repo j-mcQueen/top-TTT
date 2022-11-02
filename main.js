@@ -15,6 +15,7 @@ const display_control = (() => {
         store_dom.restart.toggleAttribute("disabled", true);
         store_dom.restart.removeEventListener("click", display_control.reset);
 
+        // return game_board array to its default state
         for (let i = 0; i < game_board.board.length; i++) {
             game_board.board[i] = "";
         }
@@ -26,9 +27,9 @@ const display_control = (() => {
         };
         // remove locked buttons
     };
-    const result = (player, res, color) => {
+    const result = (player, outcome, color) => {
         // setting color below makes it easier to apply the same color to both the announcer and restart elements
-        store_dom.announcer.textContent = `${player} ${res}! Restart game?`;
+        store_dom.announcer.textContent = `${player} ${outcome}! Restart game?`;
         store_dom.announcer.setAttribute("style", color);
 
         store_dom.restart.toggleAttribute("disabled", false);
@@ -68,7 +69,7 @@ const game_board = (() => {
         [2, 4, 6],
     ];
 
-    const results = (mark) => {
+    const result_listener = (mark) => {
         let search = win_conditions.find(condition => condition.every(index => board[index] === mark));
         if (search !== undefined) { // if true, win condition has been found
             // highlight winning spaces
@@ -82,7 +83,7 @@ const game_board = (() => {
             if (!board.includes("")) display_control.result("Game", "tied", "color: #60ffa5"); // prevents early tie being called
         };
     };
-    return { board, fill, results };
+    return { board, fill, result_listener };
 })();
 
 const Player = (mark) => {
@@ -92,10 +93,8 @@ const Player = (mark) => {
             let data_id = Number(e.target.getAttribute("data-id")); // needs to be an integer for splicing in next step
             game_board.board.splice(data_id, 1, mark); // update board array with mark at the appropriate position
             game_board.fill(); // render contents of array to game_board board
-        } else {
-            // call a display object function to indicate to the user that you can't place a mark here maybe?
         };
-        game_board.results(mark);
+        game_board.result_listener(mark); // check for win/tie condition when mark is added
     };
     return { add_mark };
 };
