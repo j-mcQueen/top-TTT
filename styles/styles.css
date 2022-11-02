@@ -32,11 +32,6 @@ a {
     transition: var(--dim);
 }
 
-a:hover {
-    color: #60ffa5;
-    transition: var(--dim);
-}
-
 .title {
     display: flex;
     justify-content: center;
@@ -55,24 +50,12 @@ a:hover {
     margin-top: 3%;
 }
 
-.icon:enabled:hover {
-    transform: scale(1.1);
-    transition: 0.3s ease;
-    backface-visibility: hidden;
-}
-
 .icon {
     background-color: var(--secondary);
     box-shadow: 0 0 6px 1px #000411 inset;
     border: none;
     border-radius: 50px;
     padding: 15px;
-    transition: var(--dim);
-}
-
-.icon:hover {
-    background-color: #C9DAE2;
-    cursor: pointer;
     transition: var(--dim);
 }
 
@@ -119,12 +102,6 @@ a:hover {
     font-weight: 900;
 }
 
-.tile:enabled:hover {
-    cursor: pointer;
-    transform: scale(1.05);
-    transition: var(--dim);
-}
-
 .tile:disabled {
     color: black;
 }
@@ -140,6 +117,32 @@ footer {
     text-align: center;
     bottom: 0;
     padding: 15px 0;
+}
+
+@media only screen and (min-width: 1081px) {
+
+    a:hover {
+        color: #60ffa5;
+        transition: var(--dim);
+    }
+
+    .icon:hover {
+        background-color: #C9DAE2;
+        cursor: pointer;
+        transition: var(--dim);
+    }
+
+    .icon:enabled:hover {
+        transform: scale(1.1);
+        transition: 0.3s ease;
+        backface-visibility: hidden;
+    }
+
+    .tile:enabled:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+        transition: var(--dim);
+    }
 }
 
 @media only screen and (max-width: 768px) {
