@@ -126,13 +126,8 @@ footer {
         transition: var(--dim);
     }
 
-    .icon:hover {
-        background-color: #C9DAE2;
-        cursor: pointer;
-        transition: var(--dim);
-    }
-
     .icon:enabled:hover {
+        cursor: pointer;
         transform: scale(1.1);
         transition: 0.3s ease;
         backface-visibility: hidden;
