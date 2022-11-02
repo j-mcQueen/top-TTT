@@ -1,3 +1,5 @@
+// to follow through the flow of the game, start from the bottom at the events IIFE
+
 const store_dom = (() => {
     // store all elements relevant to the game_board without attaching them to global scope
     const restart = document.querySelector(".restart > button");
