@@ -86,7 +86,6 @@ a {
 }
 
 .tile {
-    /* will need to change the width and height units later to create a responsive grid */
     width: 125px;
     height: 125px;
     border: none;
