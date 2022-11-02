@@ -13,7 +13,8 @@ A simple game of tic-tac-toe where one player controls both X and O. This projec
 
 ## biggest challenges
 
-
+- Detecting a win or tie condition
+- How to effectively problem solve at every stage (understanding the problem and explaining it in plain English, pseudocoding the problem then breaking the problem up into parts and implementing each small part)
 
 ## technologies used
 
