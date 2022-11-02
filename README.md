@@ -1,6 +1,6 @@
-## TIC TAC TOE
+# TIC TAC TOE
 
-A simple game of tic-tac-toe where one player controls both X and O. This project was developed as part of The Odin Project's Full Stack JavaScript course - check out my [live version]()
+A simple game of tic-tac-toe where one player controls both X and O. This project was developed as part of The Odin Project's Full Stack JavaScript course - check out my [live version](https://j-mcqueen.github.io/top-TTT/).
 
 ## new things I've learned
 
