@@ -18,7 +18,9 @@ A simple game of tic-tac-toe where one player controls both X and O. This projec
 
 ## technologies used
 
-
+- HTML
+- CSS
+- JavaScript
 
 ## known bugs/ areas for improvement
 
