@@ -10,6 +10,7 @@ A simple game of tic-tac-toe where one player controls both X and O. This projec
 - Understanding how to use pseudocode a little more effectively when problem solving
 - The importance of code documentation through comments!
 - Developed understanding of scope and the concepts of closure & namespacing
+- How to use the debugger statement in javascript to step through the code and find problem sources
 
 ## biggest challenges
 
@@ -30,3 +31,8 @@ A simple game of tic-tac-toe where one player controls both X and O. This projec
 
 ## notes
 
+- Experimented with a snake_case naming convention for variables
+- I have used a factory for handling players (even though there is only one player made in this current version) so that should I return to develop TTT further, the major pieces of functionality (like adding a mark or rendering the mark addition to the board) held inside will already exist for more players.
+- In the game's current iteration, there are only two house rules:
+    - computer is always O
+    - X goes first
