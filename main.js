@@ -76,11 +76,16 @@ const game_board = (() => {
         if (search !== undefined) { // if true, win condition has been found
             search.forEach(i => {// highlight winning spaces
                 store_dom.tiles[i].classList.toggle("winner"); // toggle on
+                console.log(store_dom.tiles[i].getAttribute("class"));
             });
             mark === "X" ? display_control.result("X", "wins", "color: #fbf67f")
-                                : display_control.result("O", "wins", "color: pink"); // announce winner
+                         : display_control.result("O", "wins", "color: pink"); // announce winner
         } else {
-            if (!board.includes("")) display_control.result("Game", "tied", "color: #60ffa5"); // prevents early tie being called
+            if (!board.includes("")) {
+                display_control.result("Game", "tied", "color: #60ffa5"); // prevents early tie being called
+            } else {
+                return false; // useful for testing applicability of automatically placing the computer's mark
+            };
         };
     };
     return { board, fill, result_listener };
@@ -88,46 +93,54 @@ const game_board = (() => {
 
 const Player = (mark) => {
     const add_mark = (e) => {
-        // on click, add mark to text content of event target button
-        if (e.target.textContent === "") {
-            let data_id = Number(e.target.getAttribute("data-id")); // needs to be an integer for splicing in next step
-            game_board.board.splice(data_id, 1, mark); // update board array with mark at the appropriate position
+        const render = (id, index, val) => {
+            game_board.board.splice(id, index, val); // update board array with mark at the appropriate position
             game_board.fill(); // render contents of array to board
         };
 
-        let vacancies = game_board.board.reduce((tile, value, index) => tile.concat(value === "" ? index : []), []); // set up opportunity to choose an empty index at random
+        const place_O = (index, start, val, test) => {
+            setTimeout(() => {
+                render(index, start, val);
+                display_control.turn("X");
+                if (test === true) game_board.result_listener("O");
+            }, 300); // might be computationally expensive because of re-checking certain board array indexes
+        };
+
+        if (e.target.textContent === "") {
+            let identifier = Number(e.target.getAttribute("data-id")); // needs to be an integer for splicing in next step
+            render(identifier, 1, mark);
+        };
+
+        // set up opportunity to choose an empty index at random
+        let vacancies = game_board.board.reduce((tile, value, index) => tile.concat(value === "" ? index : []), []);
         let random = Math.floor(Math.random() * vacancies.length);
         let index = vacancies[random];
-        setTimeout(() => {
-            if (game_board.board[index] === "") {
-                game_board.board.splice(index, 1, "O");
-                game_board.fill();
-                display_control.turn("X");
-            } else {
-                console.log("wrong");
-            }
-        }, 300);
-        // might be computationally expensive because of re-checking certain board array indexes
-        game_board.result_listener(mark); // check for win/tie condition when mark is added
+
+        if (vacancies.length < 5) { // win condition territory
+            if (game_board.result_listener(mark) === false) {
+                let test = true; // determines if you want the result listener to run after placing O
+                place_O(index, 1, "O", test);
+            };
+        } else { // not enough marks on the board for any win conditions to be triggered
+            let test = false;
+            place_O(index, 1, "O", test);
+        };
     };
     return { add_mark };
 };
 
 const game = (() => {
-    let mark;
     const x = Player("X");
-    const o = Player("O");
+    let mark = x;
 
     const turn_handler = (e) => { // supply target of click event, otherwise it gets lost when add_mark() is called
         const empty_board = (item) => item === "";
         if (game_board.board.every(empty_board)) { // if entire game_board board array is empty -> new game -> X goes first -> add X
             display_control.turn("O");
-            mark = x;
             mark.add_mark(e);
         } else { 
             if (e.target.textContent === "") {
                 store_dom.announcer.textContent.startsWith("X") ? display_control.turn("O") : display_control.turn("X");
-                // mark === x ? mark = o : mark = x;
                 mark.add_mark(e); // ensures correct alternation of x and o - prevents "breaking" the turn via multiple clicks on the same space
             };
         };
