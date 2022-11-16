@@ -20,15 +20,15 @@ const display_control = (() => {
         // return game_board array to its default state
         for (let i = 0; i < game_board.board.length; i++) {
             game_board.board[i] = "";
-        }
+        };
         game_board.fill();
 
         for (let i = 0; i < store_dom.tiles.length; i++) {
-            store_dom.tiles[i].toggleAttribute("disabled", false);
+            store_dom.tiles[i].toggleAttribute("disabled", false); // remove locked buttons
             if (store_dom.tiles[i].className === "tile winner") store_dom.tiles[i].classList.toggle("winner"); // toggle off
         };
-        // remove locked buttons
     };
+
     const result = (player, outcome, color) => {
         // setting color below makes it easier to apply the same color to both the announcer and restart elements
         store_dom.announcer.textContent = `${player} ${outcome}! Restart game?`;
@@ -43,6 +43,7 @@ const display_control = (() => {
             store_dom.tiles[i].toggleAttribute("disabled", true);
         }; // stored inside result so that locking game board occurs on game win OR tie
     };
+
     const turn = (player) => {
         store_dom.announcer.textContent = `${player} turn`;
     };
@@ -131,17 +132,15 @@ const Player = (mark) => {
 
 const game = (() => {
     const x = Player("X");
-    let mark = x;
-
     const turn_handler = (e) => { // supply target of click event, otherwise it gets lost when add_mark() is called
         const empty_board = (item) => item === "";
         if (game_board.board.every(empty_board)) { // if entire game_board board array is empty -> new game -> X goes first -> add X
             display_control.turn("O");
-            mark.add_mark(e);
+            x.add_mark(e);
         } else { 
             if (e.target.textContent === "") {
                 store_dom.announcer.textContent.startsWith("X") ? display_control.turn("O") : display_control.turn("X");
-                mark.add_mark(e); // ensures correct alternation of x and o - prevents "breaking" the turn via multiple clicks on the same space
+                x.add_mark(e); // ensures correct alternation of x and o - prevents "breaking" the turn via multiple clicks on the same space
             };
         };
     };
@@ -153,5 +152,3 @@ const events = (() => {
         store_dom.tiles[i].addEventListener("click", game.turn_handler);
     };
 })();
-
-// dont need to alternate value of mark anymore
