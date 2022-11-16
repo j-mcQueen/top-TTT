@@ -28,6 +28,7 @@ A simple game of tic-tac-toe where one player controls both X and O. This projec
 - The array which contains the game board is NOT private and can be accessed in the dev tools' console. I have made it this way so that other functions outside of the block in which it is contained can access it too. I am aware this is generally undesirable (never trust the user, right?) so I am contemplating ways to privatise the board array while giving the other functions what they need to operate
 - As of 02/11/22, the game is only single player and the user controls both the X and O turn
 - On iOS, there appears to be a slight delay when tapping marks onto tiles, preventing "fast tap" gameplay. This could be fairly annoying from a UX perspective, and I have followed the suggestions made in [this article](https://stackoverflow.com/questions/12238587/eliminate-300ms-delay-on-click-events-in-mobile-safari) to try and implement a solution, but to no avail yet.
+- The current method by which I search for the triggering of a win condition is computationally expensive - I have been informed that recursion can be an effective way of handling this problem, but I have not studied this in depth and tried to apply the principles yet.
 
 ## notes
 
