@@ -152,3 +152,5 @@ const events = (() => {
         store_dom.tiles[i].addEventListener("click", game.turn_handler);
     };
 })();
+
+// Could create a form prompt on page load which gets the user to agree with the house rules(?) and choose a player (X or O)
